@@ -4,6 +4,7 @@ import com.codingshuttle.projects.airBnbApp.service.BookingService;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class WebhookController {
     private String endpointSecret;
 
     @PostMapping("/payment")
+    @Operation(summary = "Capture the payments", tags = {"Webhook"})
     public ResponseEntity<Void> capturePayments(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
         try {
             Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
